@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import axios from "axios";
 import "./CharacterContainer.css";
 
 import Character from "./Character";
@@ -222,6 +223,43 @@ const displayCharacters = data.map((a, idx) => {
 });
 
 class CharacterContainer extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+        data: []
+    };
+  }
+
+  componentDidMount() {
+      axios.get('https://api.jikan.moe/v3/top/anime')
+      .then((response) => {
+          console.log(response.data);
+          this.setState({
+              data: response.data.top
+          })
+      })
+      .catch((error) => {
+          console.log('error hitting api', error);
+      })
+  }
+
+  displayAnimes() {
+    const display = this.state.data.map((a, idx) => {
+        return <Character
+        key={idx}
+        title={a.title}
+        creator={a.members}
+        caption={a.title}
+        user={'Rome Bell'}
+        tags={[a.type, a.type]}
+        date={a.start_date}
+        imageUrl={a.image_url}
+      />
+    });
+
+    return display;
+  }
+
   render() {
     return (
       <div>
@@ -264,6 +302,7 @@ class CharacterContainer extends Component {
         </div>
         <div className="columns body-columns">
           <div className="column is-half is-offset-one-quarter">
+            {this.displayAnimes()}
             {displayCharacters}
 
             <div className="card">
@@ -318,7 +357,7 @@ class CharacterContainer extends Component {
                   <a>@bulmaio</a>.<a href="#">#css</a>
                   <a href="#">#responsive</a>
                   <br />
-                  <time datetime="2018-1-1">11:09 PM - 1 Jan 2018</time>
+                  <time dateTime="2018-1-1">11:09 PM - 1 Jan 2018</time>
                 </div>
               </div>
               <div className="card-footer">
@@ -395,7 +434,7 @@ class CharacterContainer extends Component {
                   <a>@bulmaio</a>.<a href="#">#css</a>
                   <a href="#">#responsive</a>
                   <br />
-                  <time datetime="2018-1-1">11:09 PM - 1 Jan 2018</time>
+                  <time dateTime="2018-1-1">11:09 PM - 1 Jan 2018</time>
                 </div>
               </div>
               <div className="card-footer">
@@ -472,7 +511,7 @@ class CharacterContainer extends Component {
                   <a>@bulmaio</a>.<a href="#">#css</a>
                   <a href="#">#responsive</a>
                   <br />
-                  <time datetime="2018-1-1">12:02 PM - 1 May 2018</time>
+                  <time dateTime="2018-1-1">12:02 PM - 1 May 2018</time>
                 </div>
               </div>
               <div className="card-footer">
